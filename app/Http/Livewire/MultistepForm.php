@@ -56,10 +56,9 @@ class MultistepForm extends Component
         $this->country_code = null;
     }
 
-    // public function updated(){
-    //     $this->dispatchBrowserEvent('upateEditor');
-    //     $this->emit('upateEditor');
-    // }
+    public function hydratecompany() {
+        $this->emit('initEditor');
+    }
 
     public function render()
     {
@@ -67,7 +66,7 @@ class MultistepForm extends Component
     }
 
     public function validateData(){
-        // dd($request->all());
+        
         if($this->current_step == 1){
             $this->validate([
                 'email'=>'required|email',

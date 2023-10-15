@@ -1,6 +1,5 @@
 <form id="myForm" wire:submit.prevent="register">
-@if($current_step == 1)
-<div id="step-1" class="clientFrom step p-0" data-id='1'>
+<div id="step-1" class="clientFrom step p-0 {{$current_step == 1 ? 'd-block' : 'd-none'}}" data-id='1'>
     <div class="text-center pt-5">
     <img src="images/register-assets/mocal-logo.svg" />
     </div>
@@ -73,12 +72,9 @@
     </div>
     </div>
 </div>
-@endif 
 
 
-@if($current_step == 2)
-
-<div id="step-2" class="clientFrom step p-0 Hideborder" data-id='2'>
+<div id="step-2" class="clientFrom step p-0 Hideborder {{$current_step == 2 ? 'd-block' : 'd-none'}}" data-id='2'>
     <div class="modal-content radius24">
     <div class="pt-5">
         <div class="text-center border-btm">
@@ -98,7 +94,7 @@
         </div>
 
         <div class="mb-5">
-            <textarea col="20" id="company" wire:model.defer="company"> </textarea>
+            <textarea col="20" id="company" wire:model.defer="company"></textarea>
         </div>  
         <span class="text-danger">@error('company'){{ $message }}@enderror</span>                                     
         </div>
@@ -109,10 +105,8 @@
     </div>
     </div>
 </div>
-@endif 
 
-@if($current_step == 3)
-<div id="step-3" class="clientFrom step p-0 Hideborder" data-id='3'>
+<div id="step-3" class="clientFrom step p-0 Hideborder {{$current_step == 3 ? 'd-block' : 'd-none'}}" data-id='3'>
     <div class="modal-content radius24">
     <div class="pt-5">
 
@@ -123,8 +117,7 @@
         <div class="modal-body pt-5 modal-px-60">
         <div class="mb-4">
             <div class="row">
-            <div class="col-lg-12">                          
-                <!-- mainsite/assets/images/signed-offer-letter-assets/upload-img-2.png -->                          
+            <div class="col-lg-12">                                                
                 <div class="inputfiles">
                 <div class="fileUploadWrap">
                     <div>
@@ -159,10 +152,8 @@
     </div>
     </div>
 </div>
-@endif
 
-@if($current_step == 4)
-<div id="step-4" class="clientFrom step p-0 Hideborder" data-id='4'>
+<div id="step-4" class="clientFrom step p-0 Hideborder {{$current_step == 4 ? 'd-block' : 'd-none'}}" data-id='4'>
     <div class="modal-content radius24">
     <div class="pt-5">
 
@@ -194,7 +185,7 @@
                 </div>
                 <div class="parawrap">
                     <p class="fileName">Company: </p> 
-                    <p class="fileName">{{$company}} </p> 
+                    <p class="fileName">{!!$company!!} </p> 
                 </div>
                 </div>
             </div>
@@ -211,5 +202,26 @@
     </div>
     </div>
 </div>
-@endif
+
 </form>
+
+@push('scripts')
+<script>
+Livewire.on('initEditor', () => {
+    tinymce.init({
+        selector: '#company',
+        forced_root_block: false,
+        setup: function (editor) {
+            editor.on('init change', function () {
+                editor.save();
+            });
+            editor.on('change', function (e) {
+            console.log(editor.getContent())
+            @this.set('company', editor.getContent());
+            });
+        }
+    });
+});
+
+  </script>
+@endpush
